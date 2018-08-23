@@ -1,0 +1,75 @@
+{
+  "_args": [
+    [
+      "jingtum-base-lib@1.0.9",
+      "/Users/xdjiang/project/demo"
+    ]
+  ],
+  "_from": "jingtum-base-lib@1.0.9",
+  "_id": "jingtum-base-lib@1.0.9",
+  "_inBundle": false,
+  "_integrity": "sha1-XhzNPws+bO8MuyUV0OL5IQNBYrk=",
+  "_location": "/jingtum-base-lib",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "jingtum-base-lib@1.0.9",
+    "name": "jingtum-base-lib",
+    "escapedName": "jingtum-base-lib",
+    "rawSpec": "1.0.9",
+    "saveSpec": null,
+    "fetchSpec": "1.0.9"
+  },
+  "_requiredBy": [
+    "/",
+    "/jingtum-lib"
+  ],
+  "_resolved": "https://registry.npmjs.org/jingtum-base-lib/-/jingtum-base-lib-1.0.9.tgz",
+  "_spec": "1.0.9",
+  "_where": "/Users/xdjiang/project/demo",
+  "author": {
+    "name": "landoyjx,wudan_npm"
+  },
+  "dependencies": {
+    "assert": "^1.4.1",
+    "base-x": "^1.0.4",
+    "bn.js": "^4.11.6",
+    "bops": "^1.0.0",
+    "brorand": "^1.0.6",
+    "elliptic": "^6.3.2",
+    "extend": "^3.0.0",
+    "hash.js": "^1.0.3",
+    "utf8": "^2.1.2"
+  },
+  "description": "jingtum base lib for wallet and so on.",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "gulp": "^3.9.1",
+    "gulp-bump": "^2.5.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-jshint": "^2.0.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0",
+    "jshint": "^2.9.4",
+    "map-stream": "0.0.6",
+    "mocha": "^3.5.3",
+    "webpack": "^1.13.3"
+  },
+  "keywords": [
+    "jingtum",
+    "wallet",
+    "account"
+  ],
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "name": "jingtum-base-lib",
+  "repository": {
+    "type": "git",
+    "url": "http://git.jingtum.com/root/jingtum-base-lib.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.9"
+}
