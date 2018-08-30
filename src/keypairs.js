@@ -190,4 +190,33 @@ KeyPairs.prototype.checkAddress = function(address) {
 	}
 };
 
+/**
+ * convert the input address to byte array
+ *
+ * @param address
+ * @returns byte array
+ */
+KeyPairs.prototype.convertAddressToBytes  = function(address) {
+    try {
+        return this.__decode(ACCOUNT_PREFIX, address);
+
+    } catch (err) {
+        throw new Error('convertAddressToBytes error!');
+    }
+};
+
+/*
+ * Convert a byte array to a wallet address string
+ *
+*/
+//Wallet.prototype.convertBytesToAddress= function(bytes) {
+KeyPairs.prototype.convertBytesToAddress= function(bytes) {
+    try {
+        return this.__encode(ACCOUNT_PREFIX, bytes);
+
+    } catch (err) {
+        throw new Error('convertBytesToAddress error!');
+    }
+};
+
 module.exports = KeyPairs;
