@@ -1,6 +1,9 @@
 # The Jingtum Base JavaScript Library
 
-Basic function for development, include generate wallet, check secret and check address.
+[![Build Status](https://travis-ci.com/JCCDex/jcc_jingtum_base_lib.svg?branch=master)](https://travis-ci.com/JCCDex/jcc_jingtum_base_lib)
+[![Coverage Status](https://coveralls.io/repos/github/JCCDex/jcc_jingtum_base_lib/badge.svg?branch=master)](https://coveralls.io/github/JCCDex/jcc_jingtum_base_lib?branch=master)
+
+<!-- Basic function for development, include generate wallet, check secret and check address.
 
 `jcc_jingtum-base-lib` connects to the Jingtum base lib and runs in Node.js as well as in the browser.
 
@@ -35,7 +38,6 @@ Then use the minified `dist/jcc_jingtum-base-*-min.js` in your webpage
   var wt = new Wallet('saai2npGJD7GKh9xLxARfZXkkc8Bf','SWT');
   var pubkey = wt.getPublicKey();
 
-
   // Sign message can be an array or a hex string
   var sdata = "F95EFF5A4127E68D2D86F9847D9B6DE5C679EE7D9F3241EC8EC67F99C4CDA923";
 
@@ -54,5 +56,4 @@ Then use the minified `dist/jcc_jingtum-base-*-min.js` in your webpage
 
 ```
 ## TODO
-   Check if work in browser env
-
+   Check if work in browser env -->

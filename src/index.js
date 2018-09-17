@@ -1,6 +1,6 @@
 'use strict';
-const Wallet = require('./src/wallet');
-const KeyPair = require('./src/keypairs');
+const Wallet = require('./wallet');
+const KeyPair = require('./keypairs');
 
 exports = module.exports = {
     Wallet: Wallet,
