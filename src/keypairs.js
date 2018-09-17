@@ -62,14 +62,14 @@ const derivePrivateKey = (seed) => {
  * @constructor
  */
 class KeyPairs {
-	constructor(token) {
+	constructor(token = 'swt') {
 		let config = walletConfig.find(config => {
 			return config.currency.toLowerCase() === token.toLowerCase()
 		})
 		if (!config) {
 			throw new Error(`config of ${token} is empty`);
 		}
-		this._SEED_PREFIX = config._SEED_PREFIX;
+		this._SEED_PREFIX = config.SEED_PREFIX;
 		this._ACCOUNT_PREFIX = config.ACCOUNT_PREFIX;
 		this._base58 = baseX(config.ACCOUNT_ALPHABET);
 	}
@@ -126,8 +126,7 @@ class KeyPairs {
 	 */
 	deriveKeyPair(secret) {
 		let prefix = '00';
-		// let entropy = this._decode(this._SEED_PREFIX, secret);
-		let entropy = this._base58.decode(secret).slice(1, -4);
+		let entropy = this._decode(this._SEED_PREFIX, secret);
 		let privateKey = prefix + derivePrivateKey(entropy).toString(16, 64).toUpperCase();
 		let publicKey = bytesToHex(ec.keyFromPrivate(privateKey.slice(2)).getPublic().encodeCompressed());
 		return {
@@ -169,9 +168,9 @@ class KeyPairs {
 	 */
 	convertAddressToBytes(address) {
 		try {
-			return this._decode(this.ACCOUNT_PREFIX, address);
+			return this._decode(this._ACCOUNT_PREFIX, address);
 		} catch (err) {
-			throw new Error('convertAddressToBytes error!');
+			throw new Error('convert address to bytes in error');
 		}
 	};
 
@@ -180,9 +179,9 @@ class KeyPairs {
 	 */
 	convertBytesToAddress(bytes) {
 		try {
-			return this._encode(this.ACCOUNT_PREFIX, bytes);
+			return this._encode(this._ACCOUNT_PREFIX, bytes);
 		} catch (err) {
-			throw new Error('convertBytesToAddress error!');
+			throw new Error('convert bytes to address in error');
 		}
 	};
 

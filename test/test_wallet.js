@@ -1,4 +1,3 @@
-var assert = require('assert');
 var Wallet = require('../src/wallet');
 var expect = require('chai').expect;
 
@@ -34,6 +33,7 @@ for (var i = 0; i < 1000; ++i) {
 var SIGNATURE5 = '3045022100E9532A94BF33D4E094C0E0DA131B8BFB28D8275F0004341A5D76218C3134B40802201C8A32706AD5A719B21297B590D9AC52726C08773A65F54FD027C61ED65BCC77';
 
 describe('Wallet', function () {
+
 	describe('generate', function () {
 		it('should generate one wallet', function () {
 			var wallet = Wallet.generate();
@@ -243,5 +243,72 @@ describe('Wallet', function () {
 			var wallet = new Wallet(VALID_SECRET);
 			expect(wallet.sign(MESSAGE5)).to.be.equal(SIGNATURE5);
 		});
+
+		it('sign with invalid secret', function () {
+			var wallet = new Wallet(INVALID_SECRET1);
+			expect(wallet.sign(MESSAGE5)).to.be.equal(null);
+		})
 	});
+
+	describe('verifyTx and signTx', function () {
+		it('verify the signature successfully', function () {
+			let sdata = "F95EFF5A4127E68D2D86F9847D9B6DE5C679EE7D9F3241EC8EC67F99C4CDA923";
+			let wt = new Wallet('saai2npGJD7GKh9xLxARfZXkkc8Bf');
+			let sign = wt.signTx(sdata);
+			let verified = wt.verifyTx(sdata, sign)
+			expect(verified).to.equal(true);
+		})
+
+		it('verify with invalid secret', function () {
+			let sdata = "F95EFF5A4127E68D2D86F9847D9B6DE5C679EE7D9F3241EC8EC67F99C4CDA923";
+			let wt = new Wallet(INVALID_SECRET1);
+			let sign = '';
+			let verified = wt.verifyTx(sdata, sign)
+			expect(verified).to.equal(null);
+		})
+
+		it('sign with invalid secret', function () {
+			let sdata = "F95EFF5A4127E68D2D86F9847D9B6DE5C679EE7D9F3241EC8EC67F99C4CDA923";
+			let wt = new Wallet(INVALID_SECRET1);
+			let sign = wt.signTx(sdata);
+			expect(sign).to.equal(null);
+		})
+
+		it('sign with invalid message', function () {
+			let sdata = "";
+			let wt = new Wallet(VALID_SECRET);
+			let sign = wt.signTx(sdata);
+			expect(sign).to.equal(null);
+		})
+	})
+
+	describe('toJson', function () {
+		it('return address and secret successfully', function () {
+			let wt = new Wallet(VALID_SECRET);
+			expect(wt.toJson()).to.deep.equal({
+				address: VALID_ADDRESS,
+				secret: VALID_SECRET
+			})
+		})
+
+		it('return null if the secret is invalid', function () {
+			let wt = new Wallet(INVALID_SECRET1);
+			expect(wt.toJson()).to.equal(null)
+		})
+	})
+
+	describe('address', function () {
+
+		it('return null if the secret is invalid', function () {
+			let wt = new Wallet(INVALID_SECRET1);
+			expect(wt.address()).to.equal(null)
+		})
+	})
+
+	describe('getPublicKey', function () {
+		it('return null if the secret is invalid', function () {
+			let wt = new Wallet(INVALID_SECRET1);
+			expect(wt.getPublicKey()).to.equal(null)
+		})
+	})
 });

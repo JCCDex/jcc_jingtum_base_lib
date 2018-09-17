@@ -78,18 +78,6 @@ class Wallet {
 	}
 
 	/**
-	 * verify signature with wallet publickey
-	 * @param message
-	 * @param signature
-	 * @returns {*}
-	 */
-	verify(message, signature) {
-		if (!this._keypairs) return null;
-		let publicKey = this._keypairs.publicKey;
-		return ec.verify(hash(message), signature, hexToBytes(publicKey));
-	}
-
-	/**
 	 * get wallet address
 	 * @returns {*}
 	 */
@@ -149,7 +137,7 @@ class Wallet {
 	 */
 	verifyTx(message, signature) {
 		if (!this._keypairs) return null;
-		let publicKey = this._keypairs.publicKey;
+		let publicKey = this.getPublicKey();
 		return ec.verify(message, signature, hexToBytes(publicKey));
 	};
 }
