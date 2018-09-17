@@ -1,10 +1,10 @@
-#The Jingtum Base JavaScript Library
+# The Jingtum Base JavaScript Library
 
 Basic function for development, include generate wallet, check secret and check address.
 
 `jcc_jingtum-base-lib` connects to the Jingtum base lib and runs in Node.js as well as in the browser.
 
-##Getting `jcc_jingtum-base-lib`
+## Getting `jcc_jingtum-base-lib`
 
 **Via npm for Node.js**
 
@@ -22,7 +22,7 @@ Basic function for development, include generate wallet, check secret and check 
 
 Then use the minified `dist/jcc_jingtum-base-*-min.js` in your webpage
 
-##Quickstart
+## Quickstart
 ```
     var Wallet = require('jcc_jingtum-base-lib').Wallet;
     var wallet1 = Wallet.generate('SWT');//create a wallet by currency
@@ -30,7 +30,7 @@ Then use the minified `dist/jcc_jingtum-base-*-min.js` in your webpage
     var ret = Wallet.isValidAddress('j98a2BFmVQDSCvQEQEAF9tE8JWpvLqRuUM','SWT');// whether the address is valid
     var ret = Wallet.isValidSecret('saai2npGJD7GKh9xLxARfZXk kc8Bf','SWT');// whether the secret is valid
 ```
-##Signature verification
+## Signature verification
 ```
   var wt = new Wallet('saai2npGJD7GKh9xLxARfZXkkc8Bf','SWT');
   var pubkey = wt.getPublicKey();
