@@ -1,13 +1,13 @@
 // gulp jingtum base lib to front enabled js lib
 'use strict';
 
-var gulp = require('gulp');
-var uglify = require('gulp-uglify');
-var eslint = require('gulp-eslint');
-var webpack = require('webpack');
-var rename = require('gulp-rename');
-
-var pkg = require('./package.json');
+const gulp = require('gulp');
+const eslint = require('gulp-eslint');
+const mocha = require('gulp-mocha');
+const gutil = require('gulp-util');
+const istanbul = require('gulp-istanbul');
+const babel = require('gulp-babel');
+const isparta = require('isparta');
 
 gulp.task('eslint', function () {
     return gulp.src(['src/**/*.js'])
@@ -16,43 +16,47 @@ gulp.task('eslint', function () {
         .pipe(eslint.failAfterError());
 });
 
-gulp.task('build', function (callback) {
-    webpack({
-        cache: true,
-        entry: './index.js',
-        output: {
-            library: 'jingtum_base',
-            path: './dist',
-            filename: ['jingtum-base-', '.js'].join(pkg.version)
-        },
-    }, callback);
+gulp.task('pre-test', function () {
+    return gulp.src(['src/**/*.js'])
+        .pipe(istanbul({
+            instrumenter: isparta.Instrumenter
+        }))
+        .pipe(istanbul.hookRequire());
 });
 
-gulp.task('build-min', ['build'], function (callback) {
-    var file = ['./dist/jingtum-base-', '.js'].join(pkg.version);
-    return gulp.src(file)
-        .pipe(uglify())
-        .pipe(rename(['jingtum-base', '-min.js'].join(pkg.version)))
-        .pipe(gulp.dest('dist'));
-});
+gulp.task('build', function () {
+    return gulp.src('src/**/*.js')
+        .pipe(babel({
+            presets: [
+                ["env", {
+                    "targets": {
+                        "browsers": ["last 2 versions"],
+                        "node": "8.11.3"
+                    }
+                }]
+            ],
+            plugins: [
+                "transform-runtime"
+            ]
+        }))
+        .pipe(gulp.dest('lib/'))
+})
 
-gulp.task('build-debug', function (callback) {
-    webpack({
-        cache: true,
-        entry: './index.js',
-        output: {
-            library: 'jingtum_base',
-            path: './dist',
-            filename: ['jingtum-base-', '-debug.js'].join(pkg.version)
-        },
-        debug: true,
-        devtool: 'eval'
-    }, callback);
+gulp.task('test', ['pre-test'], function () {
+    return gulp.src(['test/*.js'])
+        .pipe(mocha())
+        .pipe(istanbul.writeReports())
+        .pipe(istanbul.enforceThresholds({
+            thresholds: {
+                global: 90
+            }
+        }))
+        .on('error', gutil.log);
 });
 
 gulp.task('watch', function () {
     gulp.watch(['src/**/*.js'], ['eslint']);
 })
 
-gulp.task('default', ['lint', 'build', 'build-debug', 'build-min']);
-gulp.task('dev', ['watch', 'eslint'])
+gulp.task('default', ['eslint', 'test']);
+gulp.task('dev', ['watch', 'test', 'eslint'])
