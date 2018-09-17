@@ -7,13 +7,13 @@ var hexToBytes = require('./utils').hexToBytes;
 var bytesToHex = require('./utils').bytesToHex;
 var hashjs = require('hash.js');
 
-var Wallet = function(secret, curreny) {
-	this._currency = typeof arguments[1] !== 'undefined'? arguments[1] : 'SWT';
+var Wallet = function (secret, currency) {
+	this._currency = currency || 'SWT';
 	this._kp = new KeyPairs(this._currency);
 	try {
 		this._keypairs = this._kp.deriveKeyPair(secret);
 		this._secret = secret;
-	} catch(err) {
+	} catch (err) {
 		this._keypairs = null;
 		this._secret = null;
 	}
@@ -24,13 +24,16 @@ var Wallet = function(secret, curreny) {
  * generate one wallet
  * @returns {{secret: string, address: string}}
  */
-Wallet.generate = function(curreny) {
-	var _currency = typeof arguments[0] !== 'undefined'? arguments[0] : 'SWT';
+Wallet.generate = function (currency) {
+	var _currency = currency || 'SWT';
 	var kp = new KeyPairs(_currency);
 	var secret = kp.generateSeed();
 	var keypair = kp.deriveKeyPair(secret);
 	var address = kp.deriveAddress(keypair.publicKey);
-	return {secret: secret, address: address};
+	return {
+		secret: secret,
+		address: address
+	};
 };
 
 /**
@@ -39,13 +42,16 @@ Wallet.generate = function(curreny) {
  * @param secret
  * @returns {*}
  */
-Wallet.fromSecret = function(secret,curreny) {
-	var _currency = typeof arguments[1] !== 'undefined'? arguments[1] : 'SWT';
+Wallet.fromSecret = function (secret, currency) {
+	var _currency = currency || 'SWT';
 	var kp = new KeyPairs(_currency);
 	try {
 		var keypair = kp.deriveKeyPair(secret);
 		var address = kp.deriveAddress(keypair.publicKey);
-		return {secret: secret, address: address};
+		return {
+			secret: secret,
+			address: address
+		};
 	} catch (err) {
 		return null;
 	}
@@ -57,8 +63,8 @@ Wallet.fromSecret = function(secret,curreny) {
  * @param address
  * @returns {boolean}
  */
-Wallet.isValidAddress = function(address,curreny) {
-	var _currency = typeof arguments[1] !== 'undefined'? arguments[1] : 'SWT';
+Wallet.isValidAddress = function (address, currency) {
+	var _currency = currency || 'SWT';
 	var kp = new KeyPairs(_currency);
 	return kp.checkAddress(address);
 };
@@ -69,8 +75,8 @@ Wallet.isValidAddress = function(address,curreny) {
  * @param secret
  * @returns {boolean}
  */
-Wallet.isValidSecret = function(secret,curreny) {
-	var _currency = typeof arguments[1] !== 'undefined'? arguments[1] : 'SWT';
+Wallet.isValidSecret = function (secret, currency) {
+	var _currency = currency || 'SWT';
 	var kp = new KeyPairs(_currency);
 	try {
 		kp.deriveKeyPair(secret);
@@ -81,7 +87,7 @@ Wallet.isValidSecret = function(secret,curreny) {
 };
 
 function hash(message) {
-  return hashjs.sha512().update(message).digest().slice(0, 32);
+	return hashjs.sha512().update(message).digest().slice(0, 32);
 }
 
 /**
@@ -89,13 +95,15 @@ function hash(message) {
  * @param message
  * @returns {*}
  */
-Wallet.prototype.sign = function(message) {
+Wallet.prototype.sign = function (message) {
 	if (!message || message.length === 0) return null;
 	if (!this._keypairs) return null;
 	var privateKey = this._keypairs.privateKey;
 
-	 // Export DER encoded signature in Array
-	return bytesToHex(ec.sign(hash(message), hexToBytes(privateKey), { canonical: true }).toDER());
+	// Export DER encoded signature in Array
+	return bytesToHex(ec.sign(hash(message), hexToBytes(privateKey), {
+		canonical: true
+	}).toDER());
 };
 
 /**
@@ -104,7 +112,7 @@ Wallet.prototype.sign = function(message) {
  * @param signature
  * @returns {*}
  */
-Wallet.prototype.verify = function(message, signature) {
+Wallet.prototype.verify = function (message, signature) {
 	if (!this._keypairs) return null;
 	var publicKey = this._keypairs.publicKey;
 	return ec.verify(hash(message), signature, hexToBytes(publicKey));
@@ -114,7 +122,7 @@ Wallet.prototype.verify = function(message, signature) {
  * get wallet address
  * @returns {*}
  */
-Wallet.prototype.address = function() {
+Wallet.prototype.address = function () {
 	if (!this._keypairs) return null;
 	var address = this._kp.deriveAddress(this._keypairs.publicKey);
 	return address;
@@ -124,12 +132,12 @@ Wallet.prototype.address = function() {
  * get wallet secret
  * @returns {*}
  */
-Wallet.prototype.secret = function() {
+Wallet.prototype.secret = function () {
 	if (!this._keypairs) return null;
 	return this._secret;
 };
 
-Wallet.prototype.toJson = function() {
+Wallet.prototype.toJson = function () {
 	if (!this._keypairs) return null;
 	return {
 		secret: secret(),
@@ -140,10 +148,10 @@ Wallet.prototype.toJson = function() {
 /*
  * Get the public key from key pair
  * used for local signing operation.
-*/
-Wallet.prototype.getPublicKey= function() {
-        if (!this._keypairs) return null;
-        return this._keypairs.publicKey;
+ */
+Wallet.prototype.getPublicKey = function () {
+	if (!this._keypairs) return null;
+	return this._keypairs.publicKey;
 };
 
 /**
@@ -153,13 +161,15 @@ Wallet.prototype.getPublicKey= function() {
  * @param message
  * @returns {*}
  */
-Wallet.prototype.signTx = function(message) {
+Wallet.prototype.signTx = function (message) {
 	if (!message || message.length === 0) return null;
 	if (!this._keypairs) return null;
 	var privateKey = this._keypairs.privateKey;
 
-	 // Export DER encoded signature in Array
-	return bytesToHex(ec.sign(message, hexToBytes(privateKey), { canonical: true }).toDER());
+	// Export DER encoded signature in Array
+	return bytesToHex(ec.sign(message, hexToBytes(privateKey), {
+		canonical: true
+	}).toDER());
 };
 
 /**
@@ -168,7 +178,7 @@ Wallet.prototype.signTx = function(message) {
  * @param signature
  * @returns {*}
  */
-Wallet.prototype.verifyTx = function(message, signature) {
+Wallet.prototype.verifyTx = function (message, signature) {
 	if (!this._keypairs) return null;
 	var publicKey = this._keypairs.publicKey;
 	return ec.verify(message, signature, hexToBytes(publicKey));

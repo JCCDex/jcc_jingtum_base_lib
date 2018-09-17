@@ -1,10 +1,10 @@
 'use strict';
-var brorand   = require('brorand');
-var hashjs    = require('hash.js');
-var EC        = require('elliptic').ec;
-var ec        = new EC('secp256k1');
+var brorand = require('brorand');
+var hashjs = require('hash.js');
+var EC = require('elliptic').ec;
+var ec = new EC('secp256k1');
 var secp256k1 = require('./secp256k1');
-var assert    = require('assert');
+var assert = require('assert');
 var hexToBytes = require('./utils').hexToBytes;
 var bytesToHex = require('./utils').bytesToHex;
 var binary = require('bops');
@@ -26,12 +26,12 @@ function sha256(bytes) {
  * @constructor
  */
 function KeyPairs(currency) {
-	this._currency = (typeof arguments[0] !== 'undefined') ? arguments[0] : 'SWT';
 	this._SEED_PREFIX = 33;
+	this._currency = currency || 'SWT';
 	this._ACCOUNT_PREFIX = 0;
 	this._alphabet = 'jpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2bcdeCg65rkm8oFqi1tuvAxyz';
-	for(var i=0; i< walletConfig.length; i++) {
-		if(walletConfig[i].currency === this._currency) {
+	for (var i = 0; i < walletConfig.length; i++) {
+		if (walletConfig[i].currency === this._currency) {
 			this._SEED_PREFIX = walletConfig[i].SEED_PREFIX;
 			this._ACCOUNT_PREFIX = walletConfig[i].ACCOUNT_PREFIX;
 			this._alphabet = walletConfig[i].ACCOUNT_ALPHABET;
@@ -55,7 +55,7 @@ KeyPairs.prototype.__bufCat0 = function (item1, buf2) {
 	return buf;
 	*/
 
-	// xdjiang 修改于2017-09-29 改用bops进行buffer管理 
+	// xdjiang@jccdex.com 修改于2017-09-29 改用bops进行buffer管理
 	var buf = binary.create(1 + buf2.length);
 	buf[0] = item1;
 	binary.copy(buf2, buf, 1, 0, buf2.length);
@@ -74,7 +74,7 @@ KeyPairs.prototype.__bufCat1 = function (buf1, buf2) {
 	buf2.copy(buf, buf1.length);
 	return buf;
 	*/
-	// xdjiang 修改于2017-09-29 改用bops进行buffer管理
+	// xdjiang@jccdex.com 修改于2017-09-29 改用bops进行buffer管理
 	var buf = binary.create(buf1.length + buf2.length);
 	binary.copy(buf1, buf);
 	binary.copy(buf2, buf, buf1.length, 0, buf2.length);
@@ -121,7 +121,7 @@ KeyPairs.prototype.__decode = function (version, input) {
  * generate random bytes and encode it to secret
  * @returns {string}
  */
-KeyPairs.prototype.generateSeed = function() {
+KeyPairs.prototype.generateSeed = function () {
 	var randBytes = brorand(16);
 	return this.__encode(this._SEED_PREFIX, randBytes);
 };
@@ -134,10 +134,10 @@ KeyPairs.prototype.generateSeed = function() {
  * @returns {buffer}
  */
 KeyPairs.prototype.__derivePrivateKey = function (seed) {
-  var order = ec.curve.n;
-  var privateGen = secp256k1.ScalarMultiple(seed);
-  var publicGen = ec.g.mul(privateGen);
-  return secp256k1.ScalarMultiple(publicGen.encodeCompressed(), 0).add(privateGen).mod(order);
+	var order = ec.curve.n;
+	var privateGen = secp256k1.ScalarMultiple(seed);
+	var publicGen = ec.g.mul(privateGen);
+	return secp256k1.ScalarMultiple(publicGen.encodeCompressed(), 0).add(privateGen).mod(order);
 };
 
 /**
@@ -145,22 +145,28 @@ KeyPairs.prototype.__derivePrivateKey = function (seed) {
  * @param {string} secret
  * @returns {{privateKey: string, publicKey: *}}
  */
-KeyPairs.prototype.deriveKeyPair = function(secret) {
+KeyPairs.prototype.deriveKeyPair = function (secret) {
 	var prefix = '00';
 	var entropy = this.__decode(this._SEED_PREFIX, secret);
 	var entropy = this._base58.decode(secret).slice(1, -4);
 	var privateKey = prefix + this.__derivePrivateKey(entropy).toString(16, 64).toUpperCase();
 	var publicKey = bytesToHex(ec.keyFromPrivate(privateKey.slice(2)).getPublic().encodeCompressed());
-	return { privateKey: privateKey, publicKey: publicKey };
+	return {
+		privateKey: privateKey,
+		publicKey: publicKey
+	};
 };
 
 /**
  * devive keypair from privatekey
  */
-KeyPairs.prototype.deriveKeyPairWithKey = function(key) {
+KeyPairs.prototype.deriveKeyPairWithKey = function (key) {
 	var privateKey = key;
 	var publicKey = bytesToHex(ec.keyFromPrivate(key).getPublic().encodeCompressed());
-	return { privateKey: privateKey, publicKey: publicKey };
+	return {
+		privateKey: privateKey,
+		publicKey: publicKey
+	};
 };
 
 
@@ -169,7 +175,7 @@ KeyPairs.prototype.deriveKeyPairWithKey = function(key) {
  * @param {string} publicKey
  * @returns {string}
  */
-KeyPairs.prototype.deriveAddress = function(publicKey) {
+KeyPairs.prototype.deriveAddress = function (publicKey) {
 	var bytes = hexToBytes(publicKey);
 	var hash256 = sha256(bytes);
 	var input = new Buffer(hashjs.ripemd160().update(hash256).digest());
@@ -181,7 +187,7 @@ KeyPairs.prototype.deriveAddress = function(publicKey) {
  * @param address
  * @returns {boolean}
  */
-KeyPairs.prototype.checkAddress = function(address) {
+KeyPairs.prototype.checkAddress = function (address) {
 	try {
 		this.__decode(this._ACCOUNT_PREFIX, address);
 		return true;
@@ -196,27 +202,25 @@ KeyPairs.prototype.checkAddress = function(address) {
  * @param address
  * @returns byte array
  */
-KeyPairs.prototype.convertAddressToBytes  = function(address) {
-    try {
-        return this.__decode(ACCOUNT_PREFIX, address);
-
-    } catch (err) {
-        throw new Error('convertAddressToBytes error!');
-    }
+KeyPairs.prototype.convertAddressToBytes = function (address) {
+	try {
+		return this.__decode(ACCOUNT_PREFIX, address);
+	} catch (err) {
+		throw new Error('convertAddressToBytes error!');
+	}
 };
 
 /*
  * Convert a byte array to a wallet address string
  *
-*/
+ */
 //Wallet.prototype.convertBytesToAddress= function(bytes) {
-KeyPairs.prototype.convertBytesToAddress= function(bytes) {
-    try {
-        return this.__encode(ACCOUNT_PREFIX, bytes);
-
-    } catch (err) {
-        throw new Error('convertBytesToAddress error!');
-    }
+KeyPairs.prototype.convertBytesToAddress = function (bytes) {
+	try {
+		return this.__encode(ACCOUNT_PREFIX, bytes);
+	} catch (err) {
+		throw new Error('convertBytesToAddress error!');
+	}
 };
 
 module.exports = KeyPairs;

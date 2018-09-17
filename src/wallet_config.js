@@ -8,7 +8,7 @@ var jingtum_wallet_config = [{
     ACCOUNT_PREFIX: 0,
     ACCOUNT_ZERO: 'jjjjjjjjjjjjjjjjjjjjjhoLvTp',
     ACCOUNT_ONE: 'jjjjjjjjjjjjjjjjjjjjBZbvri',
-    fee: 10000
+    fee: 10
 }, {
     currency: 'BWT',
     ACCOUNT_ALPHABET: 'bpshnaf39wBUDNEGHJKLM4PQRST7VWXYZ2jcdeCg65rkm8oFqi1tuvAxyz',
