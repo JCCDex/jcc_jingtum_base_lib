@@ -1,6 +1,5 @@
 'use strict';
 
-var utf8 = require('utf8');
 var BN = require('bn.js');
 var assert = require('assert');
 
@@ -12,8 +11,8 @@ function bytesToHex(a) {
 }
 
 function hexToBytes(a) {
-    assert(a.length % 2 === 0);
-    return new BN(a, 16).toArray(null, a.length / 2);
+  assert(a.length % 2 === 0);
+  return new BN(a, 16).toArray(null, a.length / 2);
 }
 
 exports.bytesToHex = bytesToHex;
