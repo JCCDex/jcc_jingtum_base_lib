@@ -37,7 +37,6 @@ describe('Wallet', function () {
 	describe('generate', function () {
 		it('should generate one wallet', function () {
 			var wallet = Wallet.generate('bwt');
-			console.log(wallet)
 			expect(wallet.address).to.not.be.null;
 			expect(wallet.secret).to.not.be.null;
 		});
@@ -223,7 +222,7 @@ describe('Wallet', function () {
 		});
 	});
 
-	describe('sign', function () {
+	describe('sign and verify', function () {
 		it('sign with normal message', function () {
 			var wallet = new Wallet(VALID_SECRET, 'bwt');
 			expect(wallet.sign(MESSAGE1)).to.be.equal(SIGNATURE1);
@@ -248,6 +247,22 @@ describe('Wallet', function () {
 		it('sign with invalid secret', function () {
 			var wallet = new Wallet(INVALID_SECRET1, 'bwt');
 			expect(wallet.sign(MESSAGE5)).to.be.equal(null);
+		})
+
+		it('verify the signature successfully', function () {
+			let sdata = "F95EFF5A4127E68D2D86F9847D9B6DE5C679EE7D9F3241EC8EC67F99C4CDA923";
+			let wt = new Wallet('saai2npGJD7GKh9xLxARfZXkkc8Bf', 'bwt');
+			let sign = wt.sign(sdata);
+			let verified = wt.verify(sdata, sign)
+			expect(verified).to.equal(true);
+		})
+
+		it('verify with invalid secret', function () {
+			let sdata = "F95EFF5A4127E68D2D86F9847D9B6DE5C679EE7D9F3241EC8EC67F99C4CDA923";
+			let wt = new Wallet(INVALID_SECRET1, 'bwt');
+			let sign = '';
+			let verified = wt.verify(sdata, sign)
+			expect(verified).to.equal(null);
 		})
 	});
 

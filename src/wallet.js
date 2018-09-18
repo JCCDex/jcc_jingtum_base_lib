@@ -63,21 +63,6 @@ class Wallet {
 	}
 
 	/**
-	 * sign message with wallet privatekey
-	 * @param message
-	 * @returns {*}
-	 */
-	sign(message) {
-		if (!message) return null
-		if (!this._keypairs) return null
-		let privateKey = this._keypairs.privateKey;
-		// Export DER encoded signature in Array
-		return bytesToHex(ec.sign(hash(message), hexToBytes(privateKey), {
-			canonical: true
-		}).toDER());
-	}
-
-	/**
 	 * get wallet address
 	 * @returns {*}
 	 */
@@ -111,6 +96,33 @@ class Wallet {
 	getPublicKey() {
 		if (!this._keypairs) return null;
 		return this._keypairs.publicKey;
+	};
+
+	/**
+	 * sign message with wallet privatekey
+	 * @param message
+	 * @returns {*}
+	 */
+	sign(message) {
+		if (!message) return null
+		if (!this._keypairs) return null
+		let privateKey = this._keypairs.privateKey;
+		// Export DER encoded signature in Array
+		return bytesToHex(ec.sign(hash(message), hexToBytes(privateKey), {
+			canonical: true
+		}).toDER());
+	}
+
+	/**
+	 * verify signature with wallet publickey
+	 * @param message
+	 * @param signature
+	 * @returns {*}
+	 */
+	verify(message, signature) {
+		if (!this._keypairs) return null;
+		var publicKey = this.getPublicKey();
+		return ec.verify(hash(message), signature, hexToBytes(publicKey));
 	};
 
 	/**
