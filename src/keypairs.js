@@ -162,7 +162,7 @@ class KeyPairs {
 	};
 
 	/**
-	 * convert the input address to byte array
+	 * convert the given address to byte array
 	 * @param address
 	 * @returns byte array
 	 */
@@ -175,7 +175,7 @@ class KeyPairs {
 	};
 
 	/*
-	 * Convert a byte array to a wallet address string
+	 * convert the byte array to wallet address
 	 */
 	convertBytesToAddress(bytes) {
 		try {
