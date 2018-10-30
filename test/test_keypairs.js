@@ -7,11 +7,7 @@ describe('test keypairs', function () {
 
     describe('create instance', function () {
         it('throw error if the config of given token is empty', function () {
-            try {
-                new Keypairs('moac')
-            } catch (error) {
-                expect(error.message).to.equal('config of moac is empty')
-            }
+            expect(() => new Keypairs('moac')).throw('config of moac is empty')
         })
     })
 
@@ -25,20 +21,12 @@ describe('test keypairs', function () {
 
         it('convertAddressToBytes in error', function () {
             let inst = new Keypairs();
-            try {
-                inst.convertAddressToBytes(undefined);
-            } catch (error) {
-                expect(error.message).to.equal('convert address to bytes in error')
-            }
+            expect(() => inst.convertAddressToBytes(undefined)).throw('convert address to bytes in error')
         })
 
         it('convertBytesToAddress in error', function () {
             let inst = new Keypairs();
-            try {
-                inst.convertBytesToAddress('');
-            } catch (error) {
-                expect(error.message).to.equal('convert bytes to address in error')
-            }
+            expect(() => inst.convertBytesToAddress('')).throw('convert bytes to address in error')
         })
     })
 })
