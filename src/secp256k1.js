@@ -23,10 +23,13 @@ function ScalarMultiple(bytes, discrim) {
 		}
 		hasher.addU32(i);
 		var key = hasher.first256BN();
+		/* istanbul ignore next */
 		if (key.cmpn(0) > 0 && key.cmp(order) < 0) {
 			return key;
 		}
 	}
+
+	/* istanbul ignore next */
 	throw new Error('impossible space search)');
 }
 
