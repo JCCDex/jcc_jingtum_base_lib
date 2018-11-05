@@ -2,8 +2,10 @@
 
 # The Jingtum Base JavaScript Library
 
+![npm](https://img.shields.io/npm/v/jcc_jingtum_base_lib.svg)
 [![Build Status](https://travis-ci.com/JCCDex/jcc_jingtum_base_lib.svg?branch=master)](https://travis-ci.com/JCCDex/jcc_jingtum_base_lib)
 [![Coverage Status](https://coveralls.io/repos/github/JCCDex/jcc_jingtum_base_lib/badge.svg?branch=master)](https://coveralls.io/github/JCCDex/jcc_jingtum_base_lib?branch=master)
+[![npm downloads](https://img.shields.io/npm/dm/jcc_jingtum_base_lib.svg)](http://npm-stat.com/charts.html?package=jcc_jingtum_base_lib)
 
 ## Installtion
 
