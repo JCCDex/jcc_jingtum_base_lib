@@ -1,7 +1,9 @@
 const Keypairs = require('../src/keypairs');
 const expect = require('chai').expect;
-
-let VALID_ADDRESS = 'jahbmVT3T9yf5D4Ykw8x6nRUtUfAAMzBRV';
+const {
+    chains,
+    data
+} = require('./config');
 
 describe('test keypairs', function () {
 
@@ -13,20 +15,27 @@ describe('test keypairs', function () {
 
     describe('convertAddressToBytes and convertBytesToAddress', function () {
         it('convert address to bytes successfully', function () {
-            let inst = new Keypairs();
-            let bytes = inst.convertAddressToBytes(VALID_ADDRESS);
-            let address = inst.convertBytesToAddress(Buffer.from(bytes));
-            expect(address).to.equal(VALID_ADDRESS)
+            for (let chain of chains) {
+                let validAddress = data[chain].validAddress;
+                let inst = new Keypairs(chain);
+                let bytes = inst.convertAddressToBytes(validAddress);
+                let address = inst.convertBytesToAddress(Buffer.from(bytes));
+                expect(address).to.equal(validAddress)
+            }
         })
 
-        it('convertAddressToBytes in error', function () {
-            let inst = new Keypairs();
-            expect(() => inst.convertAddressToBytes(undefined)).throw('convert address to bytes in error')
+        it('convertAddressToBytes in error if the address is invalid', function () {
+            for (let chain of chains) {
+                let inst = new Keypairs(chain);
+                expect(() => inst.convertAddressToBytes(undefined)).throw('convert address to bytes in error')
+            }
         })
 
-        it('convertBytesToAddress in error', function () {
-            let inst = new Keypairs();
-            expect(() => inst.convertBytesToAddress('')).throw('convert bytes to address in error')
+        it('convertBytesToAddress in error if bytes is invalid', function () {
+            for (let chain of chains) {
+                let inst = new Keypairs(chain);
+                expect(() => inst.convertBytesToAddress('')).throw('convert bytes to address in error')
+            }
         })
     })
 })
