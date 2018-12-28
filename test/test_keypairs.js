@@ -17,7 +17,7 @@ describe('test keypairs', function () {
         it('convert address to bytes successfully', function () {
             for (let chain of chains) {
                 let validAddress = data[chain].validAddress;
-                let inst = new Keypairs(chain);
+                let inst = new Keypairs(chain == 'swt' ? undefined : chain);
                 let bytes = inst.convertAddressToBytes(validAddress);
                 let address = inst.convertBytesToAddress(Buffer.from(bytes));
                 expect(address).to.equal(validAddress)
@@ -26,14 +26,14 @@ describe('test keypairs', function () {
 
         it('convertAddressToBytes in error if the address is invalid', function () {
             for (let chain of chains) {
-                let inst = new Keypairs(chain);
+                let inst = new Keypairs(chain == 'swt' ? undefined : chain);
                 expect(() => inst.convertAddressToBytes(undefined)).throw('convert address to bytes in error')
             }
         })
 
         it('convertBytesToAddress in error if bytes is invalid', function () {
             for (let chain of chains) {
-                let inst = new Keypairs(chain);
+                let inst = new Keypairs(chain == 'swt' ? undefined : chain);
                 expect(() => inst.convertBytesToAddress('')).throw('convert bytes to address in error')
             }
         })

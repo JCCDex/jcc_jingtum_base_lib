@@ -52,7 +52,7 @@
   },
   "scripts": {
     "deploy": "./publish.sh",
-    "test": "gulp && nyc --reporter=html --reporter=text mocha --timeout=3000 --reporter nyan test/*.js",
+    "test": "gulp && nyc --reporter=html --reporter=text mocha --timeout=3000 --reporter nyan test/test_*.js",
     "coveralls": "nyc report --reporter=text-lcov | coveralls"
   },
   "version": "1.1.0",

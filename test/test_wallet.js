@@ -9,7 +9,7 @@ describe('Wallet', function () {
 	describe('generate', function () {
 		it('generate a wallet successfully', function () {
 			for (let chain of chains) {
-				let wallet = Wallet.generate(chain, chain);
+				let wallet = Wallet.generate(chain == 'swt' ? undefined : chain);
 				expect(wallet.address).to.not.be.null;
 				expect(wallet.secret).to.not.be.null;
 			}
@@ -20,7 +20,7 @@ describe('Wallet', function () {
 		it('generate a wallet successfully if the secret is valid', function () {
 			for (let chain of chains) {
 				let secret = data[chain].validSecret
-				let wallet = Wallet.fromSecret(secret, chain);
+				let wallet = Wallet.fromSecret(secret, chain == 'swt' ? undefined : chain);
 				expect(wallet.secret).to.equal(secret);
 			}
 		});
@@ -29,7 +29,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secrets = data[chain].invalidSecrets
 				for (let secret of secrets) {
-					let wallet = Wallet.fromSecret(secret, chain);
+					let wallet = Wallet.fromSecret(secret, chain == 'swt' ? undefined : chain);
 					expect(wallet).to.be.null;
 				}
 			}
@@ -40,7 +40,7 @@ describe('Wallet', function () {
 		it('return true if the secret is valid', function () {
 			for (let chain of chains) {
 				let secret = data[chain].validSecret;
-				let isValid = Wallet.isValidSecret(secret, chain);
+				let isValid = Wallet.isValidSecret(secret, chain == 'swt' ? undefined : chain);
 				expect(isValid).to.be.equal.true;
 			}
 		});
@@ -49,7 +49,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secrets = data[chain].invalidSecrets
 				for (let secret of secrets) {
-					let isValid = Wallet.isValidSecret(secret, chain);
+					let isValid = Wallet.isValidSecret(secret, chain == 'swt' ? undefined : chain);
 					expect(isValid).to.be.equal.false;
 				}
 			}
@@ -60,7 +60,7 @@ describe('Wallet', function () {
 		it('return true if the address is valid', function () {
 			for (let chain of chains) {
 				let address = data[chain].validAddress;
-				let isValid = Wallet.isValidAddress(address, chain);
+				let isValid = Wallet.isValidAddress(address, chain == 'swt' ? undefined : chain);
 				expect(isValid).to.be.equal.true;
 			}
 		});
@@ -69,7 +69,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let addresses = data[chain].invalidAddresses
 				for (let address of addresses) {
-					let isValid = Wallet.isValidAddress(address, chain);
+					let isValid = Wallet.isValidAddress(address, chain == 'swt' ? undefined : chain);
 					expect(isValid).to.be.equal.false;
 				}
 			}
@@ -80,7 +80,7 @@ describe('Wallet', function () {
 		it('init successfully if the secret is valid', function () {
 			for (let chain of chains) {
 				let secret = data[chain].validSecret;
-				let wallet = new Wallet(secret, chain);
+				let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 				expect(wallet.secret()).to.be.equal(secret);
 			}
 		});
@@ -89,7 +89,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secrets = data[chain].invalidSecrets
 				for (let secret of secrets) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					expect(wallet.secret()).to.be.equal(null);
 				}
 			}
@@ -102,7 +102,7 @@ describe('Wallet', function () {
 				let messages = data[chain].validMsgs;
 				let secret = data[chain].validSecret;
 				for (let message of messages) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					expect(wallet.sign(message.msg)).to.be.equal(message.sign);
 				}
 			}
@@ -113,7 +113,7 @@ describe('Wallet', function () {
 				let messages = data[chain].invalidMsgs;
 				let secret = data[chain].validSecret;
 				for (let message of messages) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					expect(wallet.sign(message)).to.be.equal(null);
 				}
 			}
@@ -123,7 +123,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secrets = data[chain].invalidSecrets;
 				for (let secret of secrets) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					expect(wallet.sign('test')).to.be.equal(null);
 				}
 			}
@@ -133,7 +133,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secret = data[chain].validSecret;
 				let sdata = "test";
-				let wt = new Wallet(secret, chain);
+				let wt = new Wallet(secret, chain == 'swt' ? undefined : chain);
 				let sign = wt.sign(sdata);
 				let verified = wt.verify(sdata, sign)
 				expect(verified).to.equal(true);
@@ -144,7 +144,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secrets = data[chain].invalidSecrets;
 				for (let secret of secrets) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					let sign = '';
 					let verified = wallet.verify('test', sign)
 					expect(verified).to.equal(null);
@@ -156,7 +156,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secret = data[chain].validSecret;
 				let sdata = "test";
-				let wt = new Wallet(secret, chain);
+				let wt = new Wallet(secret, chain == 'swt' ? undefined : chain);
 				let sign = wt.sign(sdata);
 				let verified = wt.verify(sdata + 't', sign)
 				expect(verified).to.equal(false);
@@ -170,7 +170,7 @@ describe('Wallet', function () {
 				let messages = data[chain].invalidMsgs;
 				let secret = data[chain].validSecret;
 				for (let message of messages) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					expect(wallet.signTx(message)).to.be.equal(null);
 				}
 			}
@@ -180,7 +180,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secrets = data[chain].invalidSecrets;
 				for (let secret of secrets) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					expect(wallet.signTx('test')).to.be.equal(null);
 				}
 			}
@@ -190,7 +190,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secret = data[chain].validSecret;
 				let sdata = "test";
-				let wt = new Wallet(secret, chain);
+				let wt = new Wallet(secret, chain == 'swt' ? undefined : chain);
 				let sign = wt.signTx(sdata);
 				let verified = wt.verifyTx(sdata, sign)
 				expect(verified).to.equal(true);
@@ -201,7 +201,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secrets = data[chain].invalidSecrets;
 				for (let secret of secrets) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					let sign = '';
 					let verified = wallet.verifyTx('test', sign)
 					expect(verified).to.equal(null);
@@ -213,7 +213,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secret = data[chain].validSecret;
 				let sdata = "test";
-				let wt = new Wallet(secret, chain);
+				let wt = new Wallet(secret, chain == 'swt' ? undefined : chain);
 				let sign = wt.signTx(sdata);
 				let verified = wt.verifyTx(sdata + 't', sign)
 				expect(verified).to.equal(false);
@@ -226,7 +226,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secret = data[chain].validSecret;
 				let address = data[chain].validAddress;
-				let wallet = new Wallet(secret, chain);
+				let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 				expect(wallet.toJson()).to.deep.equal({
 					address,
 					secret
@@ -238,7 +238,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secrets = data[chain].invalidSecrets
 				for (let secret of secrets) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					expect(wallet.toJson()).to.be.equal(null);
 				}
 			}
@@ -250,7 +250,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secrets = data[chain].invalidSecrets
 				for (let secret of secrets) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					expect(wallet.address()).to.be.equal(null);
 				}
 			}
@@ -262,7 +262,7 @@ describe('Wallet', function () {
 			for (let chain of chains) {
 				let secrets = data[chain].invalidSecrets
 				for (let secret of secrets) {
-					let wallet = new Wallet(secret, chain);
+					let wallet = new Wallet(secret, chain == 'swt' ? undefined : chain);
 					expect(wallet.getPublicKey()).to.be.equal(null);
 				}
 			}
