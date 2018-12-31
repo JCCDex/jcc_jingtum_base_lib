@@ -14,6 +14,10 @@ The team [JCCDex](https://github.com/JCCDex) made the following enhancements to 
 * 支持浏览器 Support running in browsers 
 * 支持所有的井通联盟链 Support all jingtum alliance chains
 
+井畅应用交流群: 557524730
+
+JCCDex Tech support QQ group ID: 557524730
+
 ## Installtion
 
 ```shell
