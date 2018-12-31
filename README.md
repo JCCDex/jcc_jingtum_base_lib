@@ -7,6 +7,13 @@
 [![Coverage Status](https://coveralls.io/repos/github/JCCDex/jcc_jingtum_base_lib/badge.svg?branch=master)](https://coveralls.io/github/JCCDex/jcc_jingtum_base_lib?branch=master)
 [![npm downloads](https://img.shields.io/npm/dm/jcc_jingtum_base_lib.svg)](http://npm-stat.com/charts.html?package=jcc_jingtum_base_lib)
 
+## Preface
+原始代码来自[jingtum-base-lib](https://www.npmjs.com/package/jingtum-base-lib)，在此基础上[JCCDex团队](https://github.com/JCCDex)做以下增强
+
+The team [JCCDex](https://github.com/JCCDex) made the following enhancements to the code from jingtum
+* 支持浏览器 Support running in browsers 
+* 支持所有的井通联盟链 Support all jingtum alliance chains
+
 ## Installtion
 
 ```shell
@@ -37,6 +44,12 @@ Parameters
 - `swt（jingtum chain）`- `default`
 
 - `bwt（bizain chain）`
+
+bwt是商链的原生币，也是燃料币，商链是井通链的联盟链，如果添加新的联盟链，需要在 src/wallet_config.js 添加新的联盟链定义即可，如果需要我们增加请联系我们。
+
+BWT is the native token and gas token of BIZAIN. BIZAIN is the alliance chain of jingtum. If you add a new alliance chain, you need to add a new definition of the alliance chain in src/wallet_config.js. 
+
+If you need to add it in this package, please contact us.
 
 ### generate
 
