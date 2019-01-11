@@ -26,7 +26,7 @@ const _bufCat0 = (item1, buf2) => {
 	buf[0] = item1;
 	binary.copy(buf2, buf, 1, 0, buf2.length);
 	return buf;
-};
+}
 
 /**
  * concat one buffer and another
@@ -39,7 +39,7 @@ const _bufCat1 = (buf1, buf2) => {
 	binary.copy(buf1, buf);
 	binary.copy(buf2, buf, buf1.length, 0, buf2.length);
 	return buf;
-};
+}
 
 /**
  * generate privatekey from input seed
@@ -53,7 +53,7 @@ const derivePrivateKey = (seed) => {
 	let privateGen = secp256k1.ScalarMultiple(seed);
 	let publicGen = ec.g.mul(privateGen);
 	return secp256k1.ScalarMultiple(publicGen.encodeCompressed(), 0).add(privateGen).mod(order);
-};
+}
 
 /**
  * account stub for subscribe accounts transaction event
@@ -87,7 +87,7 @@ class KeyPairs {
 		let checksum = Buffer.from(sha256(sha256(buffer)).slice(0, 4));
 		let ret = _bufCat1(buffer, checksum);
 		return this._base58.encode(ret);
-	};
+	}
 
 	/**
 	 * decode encoded input
@@ -108,7 +108,7 @@ class KeyPairs {
 			if (computed[i] !== checksum[i]) throw new Error('invalid checksum');
 		}
 		return bytes.slice(1, -4);
-	};
+	}
 
 	/**
 	 * generate random bytes and encode it to secret
@@ -117,7 +117,7 @@ class KeyPairs {
 	generateSeed() {
 		let randBytes = brorand(16);
 		return this._encode(this._SEED_PREFIX, randBytes);
-	};
+	}
 
 	/**
 	 * derive keypair from secret
@@ -133,7 +133,7 @@ class KeyPairs {
 			privateKey: privateKey,
 			publicKey: publicKey
 		};
-	};
+	}
 
 	/**
 	 * derive wallet address from publickey
@@ -145,7 +145,7 @@ class KeyPairs {
 		let hash256 = sha256(bytes);
 		let input = Buffer.from(hashjs.ripemd160().update(hash256).digest());
 		return this._encode(this._ACCOUNT_PREFIX, input);
-	};
+	}
 
 	/**
 	 * check is address is valid
@@ -159,7 +159,7 @@ class KeyPairs {
 		} catch (err) {
 			return false;
 		}
-	};
+	}
 
 	/**
 	 * convert the given address to byte array
@@ -172,7 +172,7 @@ class KeyPairs {
 		} catch (err) {
 			throw new Error('convert address to bytes in error');
 		}
-	};
+	}
 
 	/*
 	 * convert the byte array to wallet address
@@ -183,7 +183,7 @@ class KeyPairs {
 		} catch (err) {
 			throw new Error('convert bytes to address in error');
 		}
-	};
+	}
 
 	// /**
 	//  * devive keypair from privatekey

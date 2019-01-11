@@ -87,7 +87,7 @@ class Wallet {
 			secret: this.secret(),
 			address: this.address()
 		};
-	};
+	}
 
 	/*
 	 * Get the public key from key pair
@@ -96,7 +96,7 @@ class Wallet {
 	getPublicKey() {
 		if (!this._keypairs) return null;
 		return this._keypairs.publicKey;
-	};
+	}
 
 	/**
 	 * sign message with wallet privatekey
@@ -123,7 +123,7 @@ class Wallet {
 		if (!this._keypairs) return null;
 		var publicKey = this.getPublicKey();
 		return ec.verify(hash(message), signature, hexToBytes(publicKey));
-	};
+	}
 
 	/**
 	 * sign message with wallet privatekey
@@ -139,7 +139,7 @@ class Wallet {
 		return bytesToHex(ec.sign(message, hexToBytes(privateKey), {
 			canonical: true
 		}).toDER());
-	};
+	}
 
 	/**
 	 * verify signature with wallet publickey
@@ -151,7 +151,7 @@ class Wallet {
 		if (!this._keypairs) return null;
 		let publicKey = this.getPublicKey();
 		return ec.verify(message, signature, hexToBytes(publicKey));
-	};
+	}
 }
 
 module.exports = Wallet;
