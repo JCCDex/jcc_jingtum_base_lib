@@ -16,7 +16,7 @@ gulp.task('build', function () {
     return gulp.src('src/**/*.js')
         .pipe(babel({
             presets: [
-                ["env", {
+                ["@babel/preset-env", {
                     "targets": {
                         "browsers": ["last 2 versions"],
                         "node": "8.11.3"
@@ -24,7 +24,7 @@ gulp.task('build', function () {
                 }]
             ],
             plugins: [
-                "transform-runtime"
+                "@babel/plugin-transform-runtime"
             ]
         }))
         .pipe(gulp.dest('lib/'))
