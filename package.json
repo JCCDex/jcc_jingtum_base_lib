@@ -24,6 +24,7 @@
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
+    "fsevents": "^2.0.7",
     "gulp": "^4.0.0",
     "gulp-babel": "^8.0.0",
     "gulp-bump": "^2.5.0",
@@ -35,7 +36,7 @@
     "jshint": "^2.10.1",
     "map-stream": "0.0.6",
     "mocha": "^5.2.0",
-    "nyc": "^13.3.0"
+    "nyc": "^14.1.1"
   },
   "keywords": [
     "jingtum",
@@ -52,7 +53,7 @@
   "scripts": {
     "deploy": "./publish.sh",
     "test": "gulp && nyc --reporter=html --reporter=text mocha --timeout=3000 test/test_*.js",
-    "coveralls": "nyc report --reporter=text-lcov | coveralls"
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "version": "1.1.1",
   "bugs": {
