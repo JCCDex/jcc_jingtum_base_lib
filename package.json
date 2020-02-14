@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@babel/runtime": "^7.8.4",
     "assert": "^1.5.0",
     "base-x": "^1.0.4",
     "bn.js": "^4.11.6",
